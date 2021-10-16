@@ -1,0 +1,3 @@
+rootProject.name = "HotRocketDemo"
+include ':app'
+include ':HotRocket'
