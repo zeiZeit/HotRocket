@@ -3,7 +3,7 @@ package com.zeit.hotrocket.appinit.handlerthread;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.zeit.hotrocket.core.utils.ThreadPoolUtils;
+import com.zeit.hotrocket.rocket.core.utils.ThreadPoolUtils;
 
 @Deprecated
 public class AppInitHandlerThread {
