@@ -2,7 +2,6 @@ package com.zeit.hotrocket.rocket.init;
 
 import android.app.Application;
 import android.os.SystemClock;
-import android.text.TextUtils;
 
 import com.zeit.hotrocket.appstartup.components.startupcomplete.StartupStageComponent;
 import com.zeit.hotrocket.appstartup.components.startupcomplete.StartupStageListener;
@@ -29,22 +28,22 @@ public class PddRocketInit {
 
         private static int getConfigThreadPoolSize(Application application) {
             try {
-                File file = new File(application.getFilesDir(), "pdd_rocket");
+                File file = new File(application.getFilesDir(), "hot_rocket");
                 if (!file.exists() || !file.isDirectory()) {
                     String str = HotRocket.TAG;
-                    Logger.d(str, "[PddRocketInit][Config][Rocket][ThreadPoolSize] Can not find dir " + file.getAbsolutePath() + ", return default: " + 2);
+                    Logger.d(str, "[HotRocketInit][Config][Rocket][ThreadPoolSize] Can not find dir " + file.getAbsolutePath() + ", return default: " + 2);
                     return 2;
                 }
                 File file2 = new File(file, "thread_pool_size_config");
                 if (!file2.exists() || !file2.isFile()) {
                     String str2 = HotRocket.TAG;
-                    Logger.d(str2, "[PddRocketInit][Config][Rocket][ThreadPoolSize] Can not find file " + file2.getAbsolutePath() + ", return default: " + 2);
+                    Logger.d(str2, "[HotRocketInit][Config][Rocket][ThreadPoolSize] Can not find file " + file2.getAbsolutePath() + ", return default: " + 2);
                     return 2;
                 }
                 int length = (int) file2.length();
                 int a = getSize(length);
                 String str3 = HotRocket.TAG;
-                Logger.d(str3, "[PddRocketInit][Config][Rocket][ThreadPoolSize] Read file len: " + length + ", return: " + a);
+                Logger.d(str3, "[HotRocketInit][Config][Rocket][ThreadPoolSize] Read file len: " + length + ", return: " + a);
                 return a;
             } catch (Throwable th) {
                 Logger.d(HotRocket.TAG, th.getLocalizedMessage(), th);
@@ -53,7 +52,7 @@ public class PddRocketInit {
         }
 
         public static void updatingThreadPoolSizeAfterStartup(final Application application) {
-            Logger.d(HotRocket.TAG, "[PddRocketInit][Config][Rocket][ThreadPoolSize] Updating thread pool size on startup finished...");
+            Logger.d(HotRocket.TAG, "[HotRocketInit][Config][Rocket][ThreadPoolSize] Updating thread pool size on startup finished...");
             updateThreadPoolSizeConfig(application);
         }
 
@@ -64,10 +63,10 @@ public class PddRocketInit {
                     long elapsedRealtime = SystemClock.elapsedRealtime();
                     HotRocketConfig.Config config = HotRocketConfig.Config.getConfig();
                     //以下可配置
-                    config.setCheckMainThreadBusy(true); //检测主线程繁忙
+                    config.setCheckMainThreadBusy(true); //是否检测主线程繁忙
                     config.setBusyThreshold(50);         //判断主线程繁忙的阈值 默认50ms未响应即为繁忙
                     config.setThreadPoolSize(3); //getConfigThreadPoolSize(application)  几个任务分发器，默认2个
-                    config.setRunInProcessName(RuntimeInfo.f5705c); //传入当前进程全名
+                    config.setRunInProcessName(ProcessNameUtil.getCurrentProcessName()); //传入当前进程全名
                     mHotRocketConfig = config.build();
                     String str = HotRocket.TAG;
                     Logger.d(str, "[PddRocketInit][Config][Rocket] initRocketConfig cost " + (SystemClock.elapsedRealtime() - elapsedRealtime) + "ms, threadPoolSize: " + mHotRocketConfig.thread_pool_size + ", isPauseIfMainThreadBusy: " + mHotRocketConfig.rocket_main_thread_check + ", mainThreadBusyThresholdMillis: " + mHotRocketConfig.rocket_busy_threshold);
@@ -113,7 +112,7 @@ public class PddRocketInit {
         });
         //开始执行
         HotRocket.launch(PddRocketInit.Config.buildRocketConfig(application));
-        StartupStageComponent.m32794c(new StartupStageListener() {
+        StartupStageComponent.setListener(new StartupStageListener() {
 
             @Override
             public void mo22063c(boolean z) {

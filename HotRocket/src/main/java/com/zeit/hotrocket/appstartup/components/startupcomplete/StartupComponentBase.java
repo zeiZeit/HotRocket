@@ -5,23 +5,23 @@ import android.app.Application;
 
 public class StartupComponentBase {
 
-    private static boolean f24307e;
+    private static boolean isMainProcess;
 
     private static Application application;
 
-    static boolean m32778c() {
-        return f24307e;
+    static boolean isMainProcess() {
+        return isMainProcess;
     }
 
-    static Application m32779d() {
+    static Application getApplication() {
         return application;
     }
 
-    static void m32776a(boolean z) {
-        f24307e = z;
+    static void setIsMainProcess(boolean z) {
+        isMainProcess = z;
     }
 
-    static void m32777b(Application application) {
+    static void setApplication(Application application) {
         StartupComponentBase.application = application;
     }
 }

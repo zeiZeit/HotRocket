@@ -4,83 +4,85 @@ import android.app.Application;
 
 public class StartupStageComponentConfig {
 
-    public Application f24321a;
+    public Application application;
 
-    public boolean f24322b;
+    public boolean isMainProcess;
 
-    public long f24323c;
+    public long startupCompleteTimeoutMillis;
 
-    public long f24324d;
+    public long startupIdleTimeoutMillis;
 
 
-    public long f24325e;
+    public long startupUserIdleTimeoutMillis;
 
-    public boolean f24326f;
+    public boolean observeHomeRender;
 
-    public static final class C5377a {
+    public static final class config {
 
-        private Application f24327i;
+        private Application application;
 
-        private boolean f24328j;
+        private boolean isMainProcess;
 
-        private long f24329k;
+        private long startupCompleteTimeoutMillis;
 
-        private long f24330l;
+        private long startupIdleTimeoutMillis;
 
-        private long f24331m;
+        private long startupUserIdleTimeoutMillis;
 
-        private boolean f24332n;
+        private boolean observeHomeRender;
 
-        public static C5377a m32798a() {
-            return new C5377a();
+        public static config get() {
+            return new config();
         }
 
-        public StartupStageComponentConfig mo28085h() {
-            StartupStageComponentConfig gVar = new StartupStageComponentConfig();
-            gVar.f24321a = this.f24327i;
-            gVar.f24323c = this.f24329k;
-            gVar.f24324d = this.f24330l;
-            gVar.f24325e = this.f24331m;
-            gVar.f24326f = this.f24332n;
-            gVar.f24322b = this.f24328j;
-            return gVar;
+        public StartupStageComponentConfig build() {
+            StartupStageComponentConfig config = new StartupStageComponentConfig();
+            config.application = this.application;
+            config.startupCompleteTimeoutMillis = this.startupCompleteTimeoutMillis;
+            config.startupIdleTimeoutMillis = this.startupIdleTimeoutMillis;
+            config.startupUserIdleTimeoutMillis = this.startupUserIdleTimeoutMillis;
+            config.observeHomeRender = this.observeHomeRender;
+            config.isMainProcess = this.isMainProcess;
+            return config;
         }
 
-        private C5377a() {
+        private config() {
         }
 
-        public C5377a mo28079b(Application application) {
-            this.f24327i = application;
+        public config setAppliaction(Application application) {
+            this.application = application;
             return this;
         }
 
-        public C5377a mo28080c(boolean z) {
-            this.f24328j = z;
+        public config setIsMainProcess(boolean z) {
+            this.isMainProcess = z;
             return this;
         }
 
-        public C5377a mo28081d(long j) {
-            this.f24329k = j;
+        public config setStartupCompleteTimeoutMillis(long j) {
+            this.startupCompleteTimeoutMillis = j;
             return this;
         }
 
-        public C5377a mo28082e(long j) {
-            this.f24330l = j;
+        public config mo28082e(long j) {
+            this.startupIdleTimeoutMillis = j;
             return this;
         }
 
-        public C5377a mo28083f(long j) {
-            this.f24331m = j;
+        public config mo28083f(long j) {
+            this.startupUserIdleTimeoutMillis = j;
             return this;
         }
 
-        public C5377a mo28084g(boolean z) {
-            this.f24332n = z;
+        public config mo28084g(boolean z) {
+            this.observeHomeRender = z;
             return this;
         }
     }
 
     public String toString() {
-        return "StartupStageComponentConfig{isMainProcess=" + this.f24322b + ", startupCompleteTimeoutMillis=" + this.f24323c + ", startupIdleTimeoutMillis=" + this.f24324d + ", startupUserIdleTimeoutMillis=" + this.f24325e + ", observeHomeRender=" + this.f24326f + '}';
+        return "StartupStageComponentConfig{isMainProcess=" + this.isMainProcess + ", startupCompleteTimeoutMillis=" + this.startupCompleteTimeoutMillis +
+                ", startupIdleTimeoutMillis=" + this.startupIdleTimeoutMillis + ", startupUserIdleTimeoutMillis=" + this.startupUserIdleTimeoutMillis +
+                ", observeHomeRender=" + this.observeHomeRender + '}';
     }
 }

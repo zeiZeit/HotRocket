@@ -35,7 +35,7 @@ public class StartupCompleteComponent {
     public static void m32769c() {
         synchronized (f24301j) {
             if (f24300i == null) {
-                StartupLogger.m32758c("StartupComponent.Complete", "StartupCompleteComponent预加载线程", new Object[0]);
+                StartupLogger.i("StartupComponent.Complete", "StartupCompleteComponent预加载线程", new Object[0]);
                 f24300i = m32774k();
             }
         }
@@ -43,20 +43,20 @@ public class StartupCompleteComponent {
 
     static void m32770d(long j) {
         final Handler handler;
-        StartupLogger.m32758c("StartupComponent.Complete", "进程启动，初始化StartupCompleteComponent", new Object[0]);
+        StartupLogger.i("StartupComponent.Complete", "进程启动，初始化StartupCompleteComponent", new Object[0]);
         synchronized (f24301j) {
             if (f24300i == null) {
-                StartupLogger.m32758c("StartupComponent.Complete", "StartupCompleteComponent初始化线程", new Object[0]);
+                StartupLogger.i("StartupComponent.Complete", "StartupCompleteComponent初始化线程", new Object[0]);
                 f24300i = m32774k();
             }
             handler = f24300i;
         }
-        if (!StartupComponentBase.m32778c()) {
-            StartupLogger.m32758c("StartupComponent.Complete", "非主进程启动，直接发送启动完成HomeReady通知...", new Object[0]);
+        if (!StartupComponentBase.isMainProcess()) {
+            StartupLogger.i("StartupComponent.Complete", "非主进程启动，直接发送启动完成HomeReady通知...", new Object[0]);
             m32772f(0, handler);
             return;
         }
-        StartupLogger.m32758c("StartupComponent.Complete", CrashHandlerLogger.m34780h("主进程启动，开始监听第一个页面创建，超时时间%sms...", Long.valueOf(j)), new Object[0]);
+        StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("主进程启动，开始监听第一个页面创建，超时时间%sms...", Long.valueOf(j)), new Object[0]);
         m32772f(j, handler);
 
         simpleActivityLifecycleCallback = new SimpleActivityLifecycleCallback() {
@@ -65,36 +65,36 @@ public class StartupCompleteComponent {
                 super.onActivityResumed(activity);
                 final String simpleName = activity.getClass().getSimpleName();
                 if (StartupCompleteComponent.f24298b || StartupCompleteComponent.f24297a) {
-                    StartupLogger.m32758c("StartupComponent.Complete", CrashHandlerLogger.m34780h("创建页面[%s]，启动完成HomeReady通知已经完成或正在排队中，忽略.", simpleName), new Object[0]);
+                    StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("创建页面[%s]，启动完成HomeReady通知已经完成或正在排队中，忽略.", simpleName), new Object[0]);
                     if (!StartupCompleteComponent.f24297a) {
-                        StartupComponentBase.m32779d().unregisterActivityLifecycleCallbacks(this);
+                        StartupComponentBase.getApplication().unregisterActivityLifecycleCallbacks(this);
                     }
                 } else if (CrashHandlerLogger.m34820R("com.xunmeng.pinduoduo.ui.activity.MainFrameActivity", activity.getClass().getName())) {
-                    StartupLogger.m32758c("StartupComponent.Complete", "创建闪屏页面[MainFrameActivity]，忽略.", new Object[0]);
+                    StartupLogger.i("StartupComponent.Complete", "创建闪屏页面[MainFrameActivity]，忽略.", new Object[0]);
                 } else {
-                    StartupLogger.m32758c("StartupComponent.Complete", CrashHandlerLogger.m34780h("创建第一个非闪屏页面[%s]，等待页面绘制...", simpleName), new Object[0]);
+                    StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("创建第一个非闪屏页面[%s]，等待页面绘制...", simpleName), new Object[0]);
                     activity.getWindow().getDecorView().post(new Runnable() {
 
                         public void run() {
                             if (StartupCompleteComponent.f24298b || StartupCompleteComponent.f24297a) {
-                                StartupLogger.m32758c("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]第一次DoFrame完成，启动完成HomeReady通知已经完成或正在排队中，忽略.", simpleName), new Object[0]);
+                                StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]第一次DoFrame完成，启动完成HomeReady通知已经完成或正在排队中，忽略.", simpleName), new Object[0]);
                                 if (!StartupCompleteComponent.f24297a) {
                                     unregisterActivityLifecycleCallbacks();
                                     return;
                                 }
                                 return;
                             }
-                            StartupLogger.m32758c("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]第一次DoFrame完成，解除监听后续页面，启动完成HomeReady通知排队中...", simpleName), new Object[0]);
+                            StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]第一次DoFrame完成，解除监听后续页面，启动完成HomeReady通知排队中...", simpleName), new Object[0]);
                             unregisterActivityLifecycleCallbacks();
                             StartupCompleteComponent.f24297a = true;
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
 
                                 public void run() {
                                     if (StartupCompleteComponent.f24298b) {
-                                        StartupLogger.m32758c("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]绘制完成，启动完成HomeReady通知已经完成，忽略.", simpleName), new Object[0]);
+                                        StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]绘制完成，启动完成HomeReady通知已经完成，忽略.", simpleName), new Object[0]);
                                         return;
                                     }
-                                    StartupLogger.m32758c("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]绘制完成，开始发送启动完成HomeReady通知...", simpleName), new Object[0]);
+                                    StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]绘制完成，开始发送启动完成HomeReady通知...", simpleName), new Object[0]);
                                     StartupCompleteComponent.m32772f(0, handler);
                                 }
                             });
@@ -103,13 +103,13 @@ public class StartupCompleteComponent {
                 }
             }
         };
-        StartupComponentBase.m32779d().registerActivityLifecycleCallbacks(simpleActivityLifecycleCallback);
+        StartupComponentBase.getApplication().registerActivityLifecycleCallbacks(simpleActivityLifecycleCallback);
     }
 
 
     private static void unregisterActivityLifecycleCallbacks(){
-        if (StartupComponentBase.m32779d()!=null&&simpleActivityLifecycleCallback!=null){
-            StartupComponentBase.m32779d().unregisterActivityLifecycleCallbacks(simpleActivityLifecycleCallback);
+        if (StartupComponentBase.getApplication()!=null&&simpleActivityLifecycleCallback!=null){
+            StartupComponentBase.getApplication().unregisterActivityLifecycleCallbacks(simpleActivityLifecycleCallback);
         }
     }
 
@@ -127,7 +127,7 @@ public class StartupCompleteComponent {
                     str = "";
                 }
                 objArr[0] = str;
-                StartupLogger.m32758c("StartupComponent.Complete", CrashHandlerLogger.m34780h("启动完成HomeReady通知完毕%s.", objArr), new Object[0]);
+                StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("启动完成HomeReady通知完毕%s.", objArr), new Object[0]);
                 List<AbstractC5368a> list = f24299h;
                 if (list != null && !list.isEmpty()) {
                     Iterator V = CrashHandlerLogger.m34824V(f24299h);
@@ -157,10 +157,10 @@ public class StartupCompleteComponent {
     public static void m32773g(AbstractC5368a aVar) {
         synchronized (f24301j) {
             if (f24298b) {
-                StartupLogger.m32758c("StartupComponent.Complete", "注册启动完成HomeReady监听[%s], 启动已经完成，直接回调", aVar.getClass().getName());
+                StartupLogger.i("StartupComponent.Complete", "注册启动完成HomeReady监听[%s], 启动已经完成，直接回调", aVar.getClass().getName());
                 aVar.mo28070a(false);
             } else {
-                StartupLogger.m32758c("StartupComponent.Complete", "注册启动完成HomeReady监听[%s], 开始监听...", aVar.getClass().getName());
+                StartupLogger.i("StartupComponent.Complete", "注册启动完成HomeReady监听[%s], 开始监听...", aVar.getClass().getName());
                 if (f24299h == null) {
                     f24299h = new LinkedList();
                 }
