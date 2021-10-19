@@ -10,7 +10,6 @@ import com.zeit.hotrocket.logger.Logger;
 import com.zeit.hotrocket.rocket.HotRocket;
 import com.zeit.hotrocket.rocket.HotRocketConfig;
 import com.zeit.hotrocket.rocket.HotRocketListener;
-
 import com.zeit.hotrocket.rocket.HotRocketTaskListener;
 
 import java.io.File;
@@ -53,41 +52,36 @@ public class PddRocketInit {
             }
         }
 
-        public static void m28806b(final Application application) {
+        public static void updatingThreadPoolSizeAfterStartup(final Application application) {
             Logger.d(HotRocket.TAG, "[PddRocketInit][Config][Rocket][ThreadPoolSize] Updating thread pool size on startup finished...");
             updateThreadPoolSizeConfig(application);
         }
 
         public static HotRocketConfig buildRocketConfig(Application application) {
-            HotRocketConfig bVar;
+            HotRocketConfig hotRocketConfig;
             synchronized (mLock) {
                 if (mHotRocketConfig == null) {
                     long elapsedRealtime = SystemClock.elapsedRealtime();
                     HotRocketConfig.Config config = HotRocketConfig.Config.getConfig();
-                    String b = VolantisParams.m7343b("rocket_main_thread_check", "");
-                    if (!TextUtils.isEmpty(b)) {
-                        config.setCheckMainThreadBusy(IllegalArgumentCrashHandler.m34779g(b));
-                    }
-                    String b2 = VolantisParams.m7343b("rocket_busy_threshold", "");
-                    if (!TextUtils.isEmpty(b2)) {
-                        config.setBusyThreshold(IllegalArgumentCrashHandler.m34776d(b2));
-                    }
-                    config.setThreadPoolSize(getConfigThreadPoolSize(application));
-                    config.setRunInProcessName(RuntimeInfo.f5705c);
+                    //以下可配置
+                    config.setCheckMainThreadBusy(true); //检测主线程繁忙
+                    config.setBusyThreshold(50);         //判断主线程繁忙的阈值 默认50ms未响应即为繁忙
+                    config.setThreadPoolSize(3); //getConfigThreadPoolSize(application)  几个任务分发器，默认2个
+                    config.setRunInProcessName(RuntimeInfo.f5705c); //传入当前进程全名
                     mHotRocketConfig = config.build();
                     String str = HotRocket.TAG;
                     Logger.d(str, "[PddRocketInit][Config][Rocket] initRocketConfig cost " + (SystemClock.elapsedRealtime() - elapsedRealtime) + "ms, threadPoolSize: " + mHotRocketConfig.thread_pool_size + ", isPauseIfMainThreadBusy: " + mHotRocketConfig.rocket_main_thread_check + ", mainThreadBusyThresholdMillis: " + mHotRocketConfig.rocket_busy_threshold);
                 }
-                bVar = mHotRocketConfig;
+                hotRocketConfig = mHotRocketConfig;
             }
-            return bVar;
+            return hotRocketConfig;
         }
 
         public static void updateThreadPoolSizeConfig(final Application application) {
         }
     }
 
-    static void m28795b(final Application application) {
+    static void launch(final Application application) {
         HotRocket.setHotRocketTaskListener(new HotRocketTaskListener() {
 
             @Override
@@ -117,7 +111,8 @@ public class PddRocketInit {
 
             }
         });
-        HotRocket.start(PddRocketInit.Config.buildRocketConfig(application));
+        //开始执行
+        HotRocket.launch(PddRocketInit.Config.buildRocketConfig(application));
         StartupStageComponent.m32794c(new StartupStageListener() {
 
             @Override

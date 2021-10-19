@@ -40,7 +40,7 @@ public class HotRocketConfig {
                 config.factoryInterceptor = this.taskFactoryInterceptor;
                 return config;
             }
-            throw new IllegalStateException("PddRocketConfig TextUtils.isEmpty(this.mProcessName)");
+            throw new IllegalStateException("HotRocketConfig TextUtils.isEmpty(this.mProcessName)");
         }
 
         private Config() {

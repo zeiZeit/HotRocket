@@ -172,7 +172,7 @@ class HotRocketPreload {
     HotRocketPreload() {
     }
 
-    private Rocket buildRocket(Application application, HotRocketConfig pddRocketConfig, List<HotRocketTask> list, PROCESS process) {
+    private Rocket buildRocket(Application application, HotRocketConfig hotRocketConfig, List<HotRocketTask> list, PROCESS process) {
         List<Task> appInitAndBackgroundTasks = getAppInitAndBackgroundTask(application, list);
         String TAG = HotRocket.TAG;
         Logger.i(TAG, "进程[" + process + "]的[" + STAGE.AppInit + "/" + THREAD.BACKGROUND + "]任务列表(" + appInitAndBackgroundTasks.size() + "): " + getTaskName2String(appInitAndBackgroundTasks));
@@ -193,11 +193,11 @@ class HotRocketPreload {
         Rocket rocket = Rocket.build(new Rocket.Config()
                 .setProcessName(process.getName())
                 .setLogger(str -> Logger.d(HotRocket.TAG, str))
-                .setThreadPoolSize(pddRocketConfig.thread_pool_size)
+                .setThreadPoolSize(hotRocketConfig.thread_pool_size)
                 .setTaskList(linkedList));
 
-        if (pddRocketConfig.rocket_main_thread_check) {
-            new MainThreadBusyStateControllerPlugin().openCheckMainThreadBusy(rocket, Long.valueOf(pddRocketConfig.rocket_busy_threshold));
+        if (hotRocketConfig.rocket_main_thread_check) {
+            new MainThreadBusyStateControllerPlugin().openCheckMainThreadBusy(rocket, Long.valueOf(hotRocketConfig.rocket_busy_threshold));
         }
         return rocket;
     }

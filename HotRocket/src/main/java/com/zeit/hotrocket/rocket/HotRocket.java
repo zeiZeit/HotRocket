@@ -12,7 +12,7 @@ import java.util.List;
 
 public class HotRocket {
 
-    public static String TAG = "PddRocket";
+    public static String TAG = "HotRocket";
 
     private static final HotRocketPreload ROCKET_PRELOAD = new HotRocketPreload();
 
@@ -34,7 +34,10 @@ public class HotRocket {
 
     private static HotRocketTaskListener hotRocketTaskListener;
 
-    /* 预加载 */
+    /**
+     * 预加载
+     * @param config
+     */
     public static void preload(HotRocketConfig config) {
         String str = TAG;
         Logger.i(str, "Rocket预加载开始 >>> " + config.processFullName);
@@ -45,7 +48,11 @@ public class HotRocket {
         }
     }
 
-    public static void start(HotRocketConfig config) {
+    /**
+     * 火箭发射
+     * @param config
+     */
+    public static void launch(HotRocketConfig config) {
         String str = TAG;
         Logger.i(str, "Rocket初始化 >>> " + config.processFullName);
         onInit();

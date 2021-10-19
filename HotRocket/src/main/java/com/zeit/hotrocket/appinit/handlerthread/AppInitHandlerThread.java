@@ -20,7 +20,7 @@ public class AppInitHandlerThread {
 
     private void init() {
         if (this.mHandlerThread == null) {
-            HandlerThread handlerThread = new HandlerThread("Startup#Pdd.InitThread", 10);
+            HandlerThread handlerThread = new HandlerThread("Startup#Hot.InitThread", 10);
             this.mHandlerThread = handlerThread;
             handlerThread.start();
         }
