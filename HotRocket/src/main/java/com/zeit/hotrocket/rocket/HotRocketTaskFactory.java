@@ -13,7 +13,7 @@ import java.util.List;
 public class HotRocketTaskFactory {
     static List<HotRocketTask> createHotRocketTasks(PROCESS process, HotRocketConfig hotRocketConfig) {
         ArrayList<HotRocketTask> taskArrayList = new ArrayList();
-        m52508b(taskArrayList, process);
+//        m52508b(taskArrayList, process);
         HotRocketTaskFactoryInterceptor factoryInterceptor = hotRocketConfig.factoryInterceptor;
         if (factoryInterceptor == null) {
             return taskArrayList;
@@ -31,7 +31,7 @@ public class HotRocketTaskFactory {
         HotRocketStaticTask hotRocketStaticTask = null;
         if (process == PROCESS.MAIN) {
 //            list.add(new HotRocketStaticTask("app_home_pre_init", SetUtil.toHashSet(new String[0]), PRIORITY.MAX, ListUtil.toArrayList(PROCESS.MAIN), STAGE.AppInit, THREAD.MAIN, new HomeUIPreInit()));
-            hotRocketStaticTask = new HotRocketStaticTask("UserIdleCommonInitTask", SetUtil.toHashSet(new String[0]), PRIORITY.MIN, ListUtil.toArrayList(PROCESS.MAIN, PROCESS.TITAN, PROCESS.LIFECYCLE, PROCESS.PATCH, PROCESS.SUPPORT, PROCESS.MEEPO, PROCESS.ASSISTS, PROCESS.XG_SERVICE_V4), STAGE.UserIdleInit, THREAD.BACKGROUND, "com.xunmeng.pinduoduo.appstartup.appinit.UserIdleCommonInitTask");
+//            hotRocketStaticTask = new HotRocketStaticTask("UserIdleCommonInitTask", SetUtil.toHashSet(new String[0]), PRIORITY.MIN, ListUtil.toArrayList(PROCESS.MAIN, PROCESS.TITAN, PROCESS.LIFECYCLE, PROCESS.PATCH, PROCESS.SUPPORT, PROCESS.MEEPO, PROCESS.ASSISTS, PROCESS.XG_SERVICE_V4), STAGE.UserIdleInit, THREAD.BACKGROUND, "com.xunmeng.pinduoduo.appstartup.appinit.UserIdleCommonInitTask");
         } else if (process == PROCESS.TITAN) {
 
         } else if (process == PROCESS.LIFECYCLE) {

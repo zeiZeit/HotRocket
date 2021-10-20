@@ -13,7 +13,7 @@ import com.zeit.hotrocket.rocket.HotRocketTaskListener;
 
 import java.io.File;
 
-public class PddRocketInit {
+public class HotRocketInit {
 
     public static class Config {
 
@@ -69,7 +69,7 @@ public class PddRocketInit {
                     config.setRunInProcessName(ProcessNameUtil.getCurrentProcessName()); //传入当前进程全名
                     mHotRocketConfig = config.build();
                     String str = HotRocket.TAG;
-                    Logger.d(str, "[PddRocketInit][Config][Rocket] initRocketConfig cost " + (SystemClock.elapsedRealtime() - elapsedRealtime) + "ms, threadPoolSize: " + mHotRocketConfig.thread_pool_size + ", isPauseIfMainThreadBusy: " + mHotRocketConfig.rocket_main_thread_check + ", mainThreadBusyThresholdMillis: " + mHotRocketConfig.rocket_busy_threshold);
+                    Logger.d(str, "[HotRocketInit][Config][Rocket] initRocketConfig cost " + (SystemClock.elapsedRealtime() - elapsedRealtime) + "ms, threadPoolSize: " + mHotRocketConfig.thread_pool_size + ", isPauseIfMainThreadBusy: " + mHotRocketConfig.rocket_main_thread_check + ", mainThreadBusyThresholdMillis: " + mHotRocketConfig.rocket_busy_threshold);
                 }
                 hotRocketConfig = mHotRocketConfig;
             }
@@ -80,7 +80,7 @@ public class PddRocketInit {
         }
     }
 
-    static void launch(final Application application) {
+    public static void launch(final Application application) {
         HotRocket.setHotRocketTaskListener(new HotRocketTaskListener() {
 
             @Override
@@ -111,7 +111,7 @@ public class PddRocketInit {
             }
         });
         //开始执行
-        HotRocket.launch(PddRocketInit.Config.buildRocketConfig(application));
+        HotRocket.launch(HotRocketInit.Config.buildRocketConfig(application));
         StartupStageComponent.setListener(new StartupStageListener() {
 
             @Override
@@ -132,8 +132,8 @@ public class PddRocketInit {
     }
 
 
-    public static void preLoadPddRocket(Application application) {
+    public static void preLoadHotRocket(Application application) {
         ContextHolder.application = application;
-        HotRocket.preload(PddRocketInit.Config.buildRocketConfig(application));
+        HotRocket.preload(HotRocketInit.Config.buildRocketConfig(application));
     }
 }
