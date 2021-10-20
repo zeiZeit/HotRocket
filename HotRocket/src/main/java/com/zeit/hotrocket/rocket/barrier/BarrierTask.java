@@ -16,8 +16,8 @@ public class BarrierTask extends Task {
 
     private CountDownLatch downLatch = new CountDownLatch(1);
 
-    public BarrierTask(String name, Set<String> set) {
-        super(name, PRIORITY.MIN.priority, set);
+    public BarrierTask(String name, Set<String> dependence) {
+        super(name, PRIORITY.MIN.priority, dependence);
     }
 
     /**

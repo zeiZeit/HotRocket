@@ -66,7 +66,10 @@ public class Rocket {
         }
     }
 
-    public Rocket launch() {
+    /**
+     *  启动异步任务分发器，开始执行异步任务
+     */
+    public Rocket launchAsyncTaskDispatchers() {
         synchronized (this) {
             if (this.hasLaunched) {
                 this.mLog4Rocket.log("Rocket has launched before.");
@@ -121,14 +124,14 @@ public class Rocket {
         return this;
     }
 
-    private Rocket(Config aVar) {
-        if (aVar == null || !aVar.isValid()) {
-            throw new IllegalArgumentException(String.format("Config %s not valid.", aVar));
+    private Rocket(Config config) {
+        if (config == null || !config.isValid()) {
+            throw new IllegalArgumentException(String.format("Config %s not valid.", config));
         }
-        this.mConfig = aVar;
+        this.mConfig = config;
         this.hasLaunched = false;
         this.mRocketLock = new RocketLock();
-        this.mLog4Rocket = new Log4Rocket(String.format("[%s]", aVar.mProcessName), aVar.mLogger);
-        this.mTaskQueue = new TaskQueue(this, aVar);
+        this.mLog4Rocket = new Log4Rocket(String.format("[%s]", config.mProcessName), config.mLogger);
+        this.mTaskQueue = new TaskQueue(this, config);
     }
 }

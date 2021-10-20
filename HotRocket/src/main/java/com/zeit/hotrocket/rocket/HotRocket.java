@@ -63,7 +63,7 @@ public class HotRocket {
         }
         Logger.i(TAG, "Rocket开始执行.");
         onStart();
-        runTask();
+        runSyncTask();
         Rocket rocket = getRocket();
         Logger.i(TAG, "Rocket执行同步部分完成.");
         if (rocket == null) {
@@ -152,8 +152,11 @@ public class HotRocket {
         }
     }
 
-    private static void runTask() {
-        List<HotRocketTask> rocketTasks = ROCKET_PRELOAD.getPreloadRocketTasks();
+    /**
+     * 运行同步任务
+     */
+    private static void runSyncTask() {
+        List<HotRocketTask> rocketTasks = ROCKET_PRELOAD.getSyncTasks();
         if (rocketTasks != null) {
             for (HotRocketTask hotRocketTask : rocketTasks) {
                 onTaskStart(hotRocketTask.getTaskName());
@@ -171,7 +174,6 @@ public class HotRocket {
         Rocket rocket = ROCKET_PRELOAD.getRocket();
         if (rocket != null) {
             rocket.addTaskListener(new Task.TaskListener() {
-
                 @Override
                 public void onTaskStart(Task task) {
                     if (!(task instanceof BarrierTask)) {
@@ -186,7 +188,8 @@ public class HotRocket {
                     }
                 }
             });
-            rocket.launch();
+            // 开始分发任务
+            rocket.launchAsyncTaskDispatchers();
         }
         return rocket;
     }

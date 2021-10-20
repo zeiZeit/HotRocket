@@ -34,7 +34,7 @@ public class HotRocketStaticTask implements HotRocketTask {
 
     private Object mTask;
 
-    private Object getRocketTask() {
+    private Object buildRocketTaskInstance() {
         InitTask bVar = this.mInitTask;
         if (bVar != null) {
             return bVar;
@@ -76,7 +76,7 @@ public class HotRocketStaticTask implements HotRocketTask {
 
     @Override
     public boolean isOpen() {
-        Object rocketTask = getRocketTask();
+        Object rocketTask = buildRocketTaskInstance();
         if (rocketTask == null) {
             return false;
         }
@@ -90,17 +90,15 @@ public class HotRocketStaticTask implements HotRocketTask {
     public void run(Context context) {
         if (!isOpen()) {
             Logger.i(HotRocket.TAG, "Task [%s] switcher is off, did not run.", this.mName);
-//            HotRocketSwitcherRecord.m52504a(this.mName, false);
             return;
         }
-        Object o = getRocketTask();
-        if (!(o instanceof InitTask)) {
+        Object taskInstance = buildRocketTaskInstance();
+        if (!(taskInstance instanceof InitTask)) {
             Logger.e(HotRocket.TAG, "Task [%s] must be instanceof 'InitTask'", this.mName);
             return;
         }
         Logger.i(HotRocket.TAG, "Task [%s] is running...", this.mName);
-//        HotRocketSwitcherRecord.m52504a(this.mName, true);
-        ((InitTask) o).run(context);
+        ((InitTask) taskInstance).run(context);
     }
 
     @Override

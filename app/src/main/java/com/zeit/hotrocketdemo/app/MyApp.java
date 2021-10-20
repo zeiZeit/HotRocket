@@ -1,4 +1,4 @@
-package com.zeit.hotrocketdemo;
+package com.zeit.hotrocketdemo.app;
 
 import android.app.Application;
 import android.content.Context;

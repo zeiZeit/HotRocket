@@ -132,7 +132,7 @@ public class PddRocketInit {
     }
 
 
-    static void preLoadPddRocket(Application application) {
+    public static void preLoadPddRocket(Application application) {
         ContextHolder.application = application;
         HotRocket.preload(PddRocketInit.Config.buildRocketConfig(application));
     }

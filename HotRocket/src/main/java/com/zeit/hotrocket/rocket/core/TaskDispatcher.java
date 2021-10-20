@@ -46,7 +46,7 @@ public class TaskDispatcher extends Thread {
                 taskCompleteEmitter.waitTaskComplete();
                 this.mRocket.mLog4Rocket.log("[Rocket分发器][%s] 任务 [%s] 进入完成状态", getName(), task.name);
                 this.mTaskQueue.completeTask(task);
-                this.mTaskQueue.organizeQueue(task);
+                this.mTaskQueue.organizeQueue(task);   // 重新整理队列
                 this.mTaskQueue.checkHasNextTask();
             } catch (InterruptedException e2) {
                 if (this.mIsInterrupt) {

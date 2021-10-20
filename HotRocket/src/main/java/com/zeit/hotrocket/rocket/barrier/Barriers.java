@@ -22,8 +22,8 @@ public class Barriers {
 
     public static BarrierTask mHomeIdle2UserIdleTask = null;
 
-    public static BarrierTask createAppInitBarrierTask(Set<String> set) {
-        BarrierTask barrierTask = new BarrierTask(mAppInit2HomeReadyInit, set);
+    public static BarrierTask createAppInitBarrierTask(Set<String> dependenceSet) {
+        BarrierTask barrierTask = new BarrierTask(mAppInit2HomeReadyInit, dependenceSet);
         mApp2HomeReadyTask = barrierTask;
         return barrierTask;
     }

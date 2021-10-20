@@ -11,6 +11,9 @@ public class Task {
 
     private Set<String> mTaskSet1;
 
+    /**
+     * 执行任务的依赖
+     */
     private Set<String> mDependence;
 
     private final Object mLock1;
@@ -48,8 +51,8 @@ public class Task {
         return this.mPriority1 == cVar.mPriority1 && ObjectsUtil.equals(this.mRocket, cVar.mRocket) && ObjectsUtil.equals(this.name, cVar.name) && ObjectsUtil.equals(this.mTaskSet1, cVar.mTaskSet1) && ObjectsUtil.equals(this.mThread, cVar.mThread) && this.mStatus == cVar.mStatus;
     }
 
-    public Task(String name, int priority, Set<String> set) {
-        this(name, priority, set, TaskRunStatus.WAITING);
+    public Task(String name, int priority, Set<String> dependence) {
+        this(name, priority, dependence, TaskRunStatus.WAITING);
     }
 
     public int hashCode() {
@@ -69,14 +72,14 @@ public class Task {
         return this.name + Constants.COLON_SEPARATOR + this.mPriority2;
     }
 
-    private Task(String name, int priority, Set<String> set, TaskRunStatus taskRunStatus) {
+    private Task(String name, int priority, Set<String> dependence, TaskRunStatus taskRunStatus) {
         this.mLock1 = new Object();
         this.mLock2 = new Object();
         this.name = name;
         this.mPriority1 = priority;
         this.mPriority2 = priority;
-        this.mTaskSet1 = new HashSet(set);
-        this.mDependence = new HashSet(set);
+        this.mTaskSet1 = new HashSet(dependence);
+        this.mDependence = new HashSet(dependence);
         this.mStatus = taskRunStatus;
     }
 
@@ -87,6 +90,7 @@ public class Task {
         this.mThread = null;
     }
 
+    //任务执行的具体方法
     protected void runTask() {
     }
 

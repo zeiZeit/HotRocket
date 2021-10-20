@@ -10,7 +10,6 @@ import com.zeit.hotrocket.appinit.annotations.THREAD;
 import com.zeit.hotrocket.logger.Logger;
 import com.zeit.hotrocket.rocket.core.Task;
 import com.zeit.hotrocket.rocket.core.Rocket;
-import com.zeit.hotrocket.rocket.core.utils.Log4Rocket;
 import com.zeit.hotrocket.rocket.core.utils.ThreadUtil;
 import com.zeit.hotrocket.rocket.barrier.BarrierTask;
 import com.zeit.hotrocket.rocket.barrier.Barriers;
@@ -32,7 +31,10 @@ class HotRocketPreload {
      */
     private HashMap<STAGE, Map<THREAD, Set<String>>> mStageTaskMap = new HashMap<>();
 
-    private List<HotRocketTask> mRocketTaskList;
+    /**
+     * 同步任务队列，AppInit阶段运行在 mainThread的任务队列
+     */
+    private List<HotRocketTask> mSyncTaskList;
 
     private Rocket mRocket;
 
@@ -76,8 +78,8 @@ class HotRocketPreload {
         return linkedList;
     }
 
-    //获取App init阶段 且不是在主线程中运行的任务
-    private List<HotRocketTask> getAppInitAndNotMainThreadTask(List<HotRocketTask> list) {
+    //获取App init阶段 且在主线程中运行的任务
+    private List<HotRocketTask> getAppInitAndMainThreadTask(List<HotRocketTask> list) {
         LinkedList linkedList = new LinkedList();
         for (HotRocketTask hotRocketTask : list) {
             if (!(STAGE.AppInit.equals(hotRocketTask.getStage()) && THREAD.MAIN.equals(hotRocketTask.getThread()))) {
@@ -240,15 +242,15 @@ class HotRocketPreload {
         PROCESS process = HotRocketProcessInstance.getPROCESS(ContextHolder.application, hotRocketConfig.processFullName);
         if (process != null) {
             List<HotRocketTask> hotRocketTaskList = createHotRocketTasks(process, hotRocketConfig);
-            this.mRocketTaskList = getAppInitAndNotMainThreadTask(hotRocketTaskList);
+            this.mSyncTaskList = getAppInitAndMainThreadTask(hotRocketTaskList);
             String str = HotRocket.TAG;
-            Logger.i(str, "进程[" + process + "]的[" + STAGE.AppInit + "/" + THREAD.MAIN + "]任务列表(" + this.mRocketTaskList.size() + "): " + getHotRocketTaskName2String(this.mRocketTaskList));
+            Logger.i(str, "进程[" + process + "]的[" + STAGE.AppInit + "/" + THREAD.MAIN + "]任务列表(" + this.mSyncTaskList.size() + "): " + getHotRocketTaskName2String(this.mSyncTaskList));
             this.mRocket = buildRocket(ContextHolder.application, hotRocketConfig, hotRocketTaskList, process);
         }
     }
 
-    public List<HotRocketTask> getPreloadRocketTasks() {
-        return this.mRocketTaskList;
+    public List<HotRocketTask> getSyncTasks() {
+        return this.mSyncTaskList;
     }
 
     public Rocket getRocket() {
