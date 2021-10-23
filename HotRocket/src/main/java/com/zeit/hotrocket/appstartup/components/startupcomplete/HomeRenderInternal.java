@@ -26,7 +26,7 @@ public class HomeRenderInternal {
         void mo28060a();
     }
 
-    static void init(boolean isObserveHomeRender) {
+    static void init(boolean isObserveHomeRender,String mainActivityName) {
         HomeRenderInternal.isObserveHomeRender = isObserveHomeRender;
         if (!isObserveHomeRender) {
             StartupLogger.i("StartupComponent.HomeRender", "HomeRenderInternal init disabled.", new Object[0]);
@@ -35,7 +35,7 @@ public class HomeRenderInternal {
 
                 @Override
                 public void onActivityCreated(Activity activity, Bundle bundle) {
-                    if (safeEquals("com.xunmeng.pinduoduo.ui.activity.HomeActivity", activity.getClass().getName())) {
+                    if (safeEquals(mainActivityName, activity.getClass().getName())) {
                         StartupLogger.i("StartupComponent.HomeRender", "HomeRenderInternal监听到首页[HomeActivity]创建.", new Object[0]);
                         HomeRenderInternal.homeActivityCreate = true;
                     }

@@ -8,6 +8,16 @@ import java.io.IOException;
 public class ProcessNameUtil {
     private static String CURRENT_PROCESS_NAME;
 
+    public static boolean isMainProcess(String packageName){
+        if (packageName==null||packageName.equals("")){
+            return false;
+        }else if (getCurrentProcessName()==null){
+            return false;
+        }else {
+            return packageName.equals(getCurrentProcessName());
+        }
+    }
+
     public static String getCurrentProcessName() {
         if (CURRENT_PROCESS_NAME!=null&&!CURRENT_PROCESS_NAME.equals("")){
             return CURRENT_PROCESS_NAME;

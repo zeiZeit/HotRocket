@@ -11,18 +11,18 @@ public class StartupStageComponent {
         StartupIdleComponent.setObserver(new StartupIdleComponent.Observer() {
 
             @Override
-            public void mo28075a(boolean z) {
-                listener.mo22063c(z);
+            public void onHomeReady(boolean z) {
+                listener.onHomeReady(z);
             }
 
             @Override
-            public void mo28076b(boolean z) {
-                listener.mo22064d(z);
+            public void onIdle(boolean z) {
+                listener.onIdle(z);
             }
 
             @Override
-            public void mo28077c(boolean z) {
-                listener.mo22065e(z);
+            public void onUserIdle(boolean z) {
+                listener.onUserIdle(z);
             }
         });
     }
@@ -32,7 +32,7 @@ public class StartupStageComponent {
         StartupLogger.i("StartupComponent.Stage", "进程启动，初始化StartupStageComponent: " + config, new Object[0]);
         StartupComponentBase.setApplication(config.application);
         StartupComponentBase.setIsMainProcess(config.isMainProcess);
-        StartupIdleComponent.init(config.startupIdleTimeoutMillis, config.startupUserIdleTimeoutMillis, config.observeHomeRender);
+        StartupIdleComponent.init(config.startupIdleTimeoutMillis, config.startupUserIdleTimeoutMillis, config.observeHomeRender,config.HomeActivityName);
         StartupCompleteComponent.m32770d(config.startupCompleteTimeoutMillis);
     }
 }

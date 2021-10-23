@@ -12,11 +12,15 @@ public class HotRocketConfig {
 
     public int thread_pool_size;
 
+    public String packageName;
+
     public HotRocketTaskFactoryInterceptor factoryInterceptor;
 
     public static final class Config {
 
         private String processFullName;
+
+        private String packageName;
 
         private boolean rocket_main_thread_check = true;
 
@@ -38,6 +42,7 @@ public class HotRocketConfig {
                 config.thread_pool_size = this.thread_pool_size;
                 config.rocket_busy_threshold = this.rocket_busy_threshold;
                 config.factoryInterceptor = this.taskFactoryInterceptor;
+                config.packageName = this.packageName;
                 return config;
             }
             throw new IllegalStateException("HotRocketConfig TextUtils.isEmpty(this.mProcessName)");
@@ -63,6 +68,15 @@ public class HotRocketConfig {
 
         public Config setThreadPoolSize(int i) {
             this.thread_pool_size = i;
+            return this;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public Config setPackageName(String packageName) {
+            this.packageName = packageName;
             return this;
         }
     }

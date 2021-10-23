@@ -67,6 +67,7 @@ public class HotRocketInit {
                     config.setBusyThreshold(50);         //判断主线程繁忙的阈值 默认50ms未响应即为繁忙
                     config.setThreadPoolSize(3); //getConfigThreadPoolSize(application)  几个任务分发器，默认2个
                     config.setRunInProcessName(ProcessNameUtil.getCurrentProcessName()); //传入当前进程全名
+                    config.setPackageName(application.getPackageName()); //传入当前进程全名
                     mHotRocketConfig = config.build();
                     String str = HotRocket.TAG;
                     Logger.d(str, "[HotRocketInit][Config][Rocket] initRocketConfig cost " + (SystemClock.elapsedRealtime() - elapsedRealtime) + "ms, threadPoolSize: " + mHotRocketConfig.thread_pool_size + ", isPauseIfMainThreadBusy: " + mHotRocketConfig.rocket_main_thread_check + ", mainThreadBusyThresholdMillis: " + mHotRocketConfig.rocket_busy_threshold);
@@ -115,17 +116,17 @@ public class HotRocketInit {
         StartupStageComponent.setListener(new StartupStageListener() {
 
             @Override
-            public void mo22063c(boolean z) {
+            public void onHomeReady(boolean z) {
                 HotRocket.onHomeReady();
             }
 
             @Override
-            public void mo22064d(boolean z) {
+            public void onIdle(boolean z) {
                 HotRocket.onHomeIdle();
             }
 
             @Override
-            public void mo22065e(boolean z) {
+            public void onUserIdle(boolean z) {
                 HotRocket.onUserIdle();
             }
         });

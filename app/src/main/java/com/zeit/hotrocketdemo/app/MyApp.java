@@ -69,14 +69,15 @@ public class MyApp extends Application {
                 Logger.i(str, str2);
             }
         });
-        StartupStageComponentConfigUpdater.m28823a();
+        StartupStageComponentConfigUpdater.init(this.packageName);
         StartupStageComponent.init(StartupStageComponentConfig.config.get()
                 .setAppliaction(getApplication())
                 .setIsMainProcess(this.isMainProcess)
-                .setStartupCompleteTimeoutMillis(StartupStageComponentConfigUpdater.m28825c())
-                .mo28082e(StartupStageComponentConfigUpdater.m28827e())
-                .mo28083f(StartupStageComponentConfigUpdater.m28829g())
-                .mo28084g(StartupStageComponentConfigUpdater.m28831i())
+                .setStartupCompleteTimeoutMillis(StartupStageComponentConfigUpdater.getAppStartupCompleteTimeout())
+                .setStartupIdleTimeoutMillis(StartupStageComponentConfigUpdater.getStartupIdleTimeoutMillis())
+                .setStartupUserIdleTimeoutMillis(StartupStageComponentConfigUpdater.getStartupUserIdleTimeoutMillis())
+                .setObserveHomeRender(StartupStageComponentConfigUpdater.isObserveHomeRender())
+                .setHomeActivityName("com.zeit.hotrocketdemo.MainActivity")
                 .build());
     }
 

@@ -11,12 +11,12 @@ import java.util.List;
 
 public class StartupIdleComponent {
 
-    private static List<Observer> f24309g;
+    private static List<Observer> observerList;
 
 
-    static void init(final long j, final long j2, boolean observeHomeRender) {
+    static void init(final long j, final long j2, boolean observeHomeRender,String mainActivityName) {
         StartupLogger.i("StartupComponent.Idle", "进程启动，初始化StartupIdleComponent", new Object[0]);
-        HomeRenderInternal.init(observeHomeRender);
+        HomeRenderInternal.init(observeHomeRender,mainActivityName);
         StartupCompleteComponent.m32773g(new StartupCompleteComponent.AbstractC5368a() {
 
             @Override
@@ -71,21 +71,21 @@ public class StartupIdleComponent {
         synchronized (StartupIdleComponent.class) {
             if (StartupStageComponent.stage == StartupStage.USER_IDLE) {
                 StartupLogger.i("StartupComponent.Idle", "注册启动IDLE监听[%s]，直接回调启动USER_IDLE", observer.getClass().getName());
-                observer.mo28075a(false);
-                observer.mo28076b(false);
-                observer.mo28077c(false);
+                observer.onHomeReady(false);
+                observer.onIdle(false);
+                observer.onUserIdle(false);
             } else if (StartupStageComponent.stage == StartupStage.IDLE) {
                 StartupLogger.i("StartupComponent.Idle", "注册启动IDLE监听[%s]，直接回调启动IDLE，开始监听USER_IDLE...", observer.getClass().getName());
-                observer.mo28075a(false);
-                observer.mo28076b(false);
-                m32786h(observer);
+                observer.onHomeReady(false);
+                observer.onIdle(false);
+                addObserver(observer);
             } else if (StartupStageComponent.stage == StartupStage.COMPLETE) {
                 StartupLogger.i("StartupComponent.Idle", "注册启动IDLE监听[%s]，直接回调启动完成，开始监听IDLE/USER_IDLE...", observer.getClass().getName());
-                observer.mo28075a(false);
-                m32786h(observer);
+                observer.onHomeReady(false);
+                addObserver(observer);
             } else {
                 StartupLogger.i("StartupComponent.Idle", "注册启动IDLE监听[%s], 开始监听...", observer.getClass().getName());
-                m32786h(observer);
+                addObserver(observer);
             }
         }
     }
@@ -105,11 +105,11 @@ public class StartupIdleComponent {
                 sb.append(str);
                 sb.append(", 进行COMPLETE回调");
                 StartupLogger.i("StartupComponent.Idle", sb.toString(), new Object[0]);
-                List<Observer> list = f24309g;
+                List<Observer> list = observerList;
                 if (list != null && !list.isEmpty()) {
-                    Iterator V = CrashHandlerLogger.m34824V(f24309g);
+                    Iterator V = CrashHandlerLogger.m34824V(observerList);
                     while (V.hasNext()) {
-                        ((Observer) V.next()).mo28075a(z);
+                        ((Observer) V.next()).onHomeReady(z);
                     }
                 }
             }
@@ -131,11 +131,11 @@ public class StartupIdleComponent {
                 sb.append(str);
                 sb.append(", 进行IDLE回调");
                 StartupLogger.i("StartupComponent.Idle", sb.toString(), new Object[0]);
-                List<Observer> list = f24309g;
+                List<Observer> list = observerList;
                 if (list != null && !list.isEmpty()) {
-                    Iterator V = CrashHandlerLogger.m34824V(f24309g);
+                    Iterator V = CrashHandlerLogger.m34824V(observerList);
                     while (V.hasNext()) {
-                        ((Observer) V.next()).mo28076b(z);
+                        ((Observer) V.next()).onIdle(z);
                     }
                 }
             }
@@ -157,34 +157,34 @@ public class StartupIdleComponent {
                 sb.append(str);
                 sb.append(", 进行USER_IDLE回调");
                 StartupLogger.i("StartupComponent.Idle", sb.toString(), new Object[0]);
-                List<Observer> list = f24309g;
+                List<Observer> list = observerList;
                 if (list != null && !list.isEmpty()) {
-                    Iterator V = CrashHandlerLogger.m34824V(f24309g);
+                    Iterator V = CrashHandlerLogger.m34824V(observerList);
                     while (V.hasNext()) {
-                        ((Observer) V.next()).mo28077c(z);
+                        ((Observer) V.next()).onUserIdle(z);
                     }
-                    f24309g.clear();
+                    observerList.clear();
                 }
-                f24309g = null;
+                observerList = null;
             }
         }
     }
 
-    private static void m32786h(Observer aVar) {
-        if (f24309g == null) {
-            f24309g = new LinkedList();
+    private static void addObserver(Observer aVar) {
+        if (observerList == null) {
+            observerList = new LinkedList();
         }
-        f24309g.add(aVar);
+        observerList.add(aVar);
     }
 
     public static abstract class Observer {
-        public void mo28075a(boolean z) {
+        public void onHomeReady(boolean z) {
         }
 
-        public void mo28076b(boolean z) {
+        public void onIdle(boolean z) {
         }
 
-        public void mo28077c(boolean z) {
+        public void onUserIdle(boolean z) {
         }
     }
 }

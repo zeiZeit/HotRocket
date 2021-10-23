@@ -12,6 +12,7 @@ public class StartupStageComponentConfig {
 
     public long startupIdleTimeoutMillis;
 
+    public String HomeActivityName;
 
     public long startupUserIdleTimeoutMillis;
 
@@ -31,6 +32,9 @@ public class StartupStageComponentConfig {
 
         private boolean observeHomeRender;
 
+
+        private String HomeActivityName;
+
         public static config get() {
             return new config();
         }
@@ -43,6 +47,7 @@ public class StartupStageComponentConfig {
             config.startupUserIdleTimeoutMillis = this.startupUserIdleTimeoutMillis;
             config.observeHomeRender = this.observeHomeRender;
             config.isMainProcess = this.isMainProcess;
+            config.HomeActivityName = this.HomeActivityName;
             return config;
         }
 
@@ -64,20 +69,30 @@ public class StartupStageComponentConfig {
             return this;
         }
 
-        public config mo28082e(long j) {
+        public config setStartupIdleTimeoutMillis(long j) {
             this.startupIdleTimeoutMillis = j;
             return this;
         }
 
-        public config mo28083f(long j) {
+        public config setStartupUserIdleTimeoutMillis(long j) {
             this.startupUserIdleTimeoutMillis = j;
             return this;
         }
 
-        public config mo28084g(boolean z) {
+        public config setObserveHomeRender(boolean z) {
             this.observeHomeRender = z;
             return this;
         }
+
+        public String getHomeActivityName() {
+            return HomeActivityName;
+        }
+
+        public config setHomeActivityName(String homeActivityName) {
+            HomeActivityName = homeActivityName;
+            return this;
+        }
+
     }
 
     public String toString() {
