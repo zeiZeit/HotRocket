@@ -38,7 +38,6 @@ public class MyApp extends Application {
             ApplicationPreload.preloadRocket(this.application);
             HotRocketInit.launch(this);
             initStartupComponent(this);
-
         }
     }
 

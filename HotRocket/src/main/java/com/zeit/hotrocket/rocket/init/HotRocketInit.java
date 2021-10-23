@@ -9,9 +9,11 @@ import com.zeit.hotrocket.logger.Logger;
 import com.zeit.hotrocket.rocket.HotRocket;
 import com.zeit.hotrocket.rocket.HotRocketConfig;
 import com.zeit.hotrocket.rocket.HotRocketListener;
+import com.zeit.hotrocket.rocket.HotRocketTask;
 import com.zeit.hotrocket.rocket.HotRocketTaskListener;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class HotRocketInit {
 
@@ -56,7 +58,7 @@ public class HotRocketInit {
             updateThreadPoolSizeConfig(application);
         }
 
-        public static HotRocketConfig buildRocketConfig(Application application) {
+        public static HotRocketConfig buildRocketConfig(Application application,ArrayList<HotRocketTask> taskLs) {
             HotRocketConfig hotRocketConfig;
             synchronized (mLock) {
                 if (mHotRocketConfig == null) {
@@ -68,6 +70,10 @@ public class HotRocketInit {
                     config.setThreadPoolSize(3); //getConfigThreadPoolSize(application)  几个任务分发器，默认2个
                     config.setRunInProcessName(ProcessNameUtil.getCurrentProcessName()); //传入当前进程全名
                     config.setPackageName(application.getPackageName()); //传入当前进程全名
+                    if (taskLs!=null){
+                        config.setTask(taskLs); // 传入预加载任务
+
+                    }
                     mHotRocketConfig = config.build();
                     String str = HotRocket.TAG;
                     Logger.d(str, "[HotRocketInit][Config][Rocket] initRocketConfig cost " + (SystemClock.elapsedRealtime() - elapsedRealtime) + "ms, threadPoolSize: " + mHotRocketConfig.thread_pool_size + ", isPauseIfMainThreadBusy: " + mHotRocketConfig.rocket_main_thread_check + ", mainThreadBusyThresholdMillis: " + mHotRocketConfig.rocket_busy_threshold);
@@ -112,7 +118,7 @@ public class HotRocketInit {
             }
         });
         //开始执行
-        HotRocket.launch(HotRocketInit.Config.buildRocketConfig(application));
+        HotRocket.launch(HotRocketInit.Config.buildRocketConfig(application,null));
         StartupStageComponent.setListener(new StartupStageListener() {
 
             @Override
@@ -133,8 +139,8 @@ public class HotRocketInit {
     }
 
 
-    public static void preLoadHotRocket(Application application) {
+    public static void preLoadHotRocket(Application application, ArrayList<HotRocketTask> list) {
         ContextHolder.application = application;
-        HotRocket.preload(HotRocketInit.Config.buildRocketConfig(application));
+        HotRocket.preload(HotRocketInit.Config.buildRocketConfig(application,list));
     }
 }

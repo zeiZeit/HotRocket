@@ -21,9 +21,9 @@ public class StartupCompleteComponent {
 
     private static List<AbstractC5368a> f24299h;
 
-    private static Handler f24300i;
+    private static Handler mHandler;
 
-    private static final Object f24301j = new Object();
+    private static final Object mLock = new Object();
 
     static SimpleActivityLifecycleCallback simpleActivityLifecycleCallback;
 
@@ -32,11 +32,11 @@ public class StartupCompleteComponent {
         void mo28070a(boolean z);
     }
 
-    public static void m32769c() {
-        synchronized (f24301j) {
-            if (f24300i == null) {
+    public static void preload() {
+        synchronized (mLock) {
+            if (mHandler == null) {
                 StartupLogger.i("StartupComponent.Complete", "StartupCompleteComponent预加载线程", new Object[0]);
-                f24300i = m32774k();
+                mHandler = m32774k();
             }
         }
     }
@@ -44,12 +44,12 @@ public class StartupCompleteComponent {
     static void m32770d(long j) {
         final Handler handler;
         StartupLogger.i("StartupComponent.Complete", "进程启动，初始化StartupCompleteComponent", new Object[0]);
-        synchronized (f24301j) {
-            if (f24300i == null) {
+        synchronized (mLock) {
+            if (mHandler == null) {
                 StartupLogger.i("StartupComponent.Complete", "StartupCompleteComponent初始化线程", new Object[0]);
-                f24300i = m32774k();
+                mHandler = m32774k();
             }
-            handler = f24300i;
+            handler = mHandler;
         }
         if (!StartupComponentBase.isMainProcess()) {
             StartupLogger.i("StartupComponent.Complete", "非主进程启动，直接发送启动完成HomeReady通知...", new Object[0]);
@@ -115,10 +115,10 @@ public class StartupCompleteComponent {
 
     public static void m32771e(boolean z, Handler handler) {
         String str;
-        synchronized (f24301j) {
+        synchronized (mLock) {
             if (!f24298b) {
                 f24298b = true;
-                f24300i = null;
+                mHandler = null;
                 handler.getLooper().quit();
                 Object[] objArr = new Object[1];
                 if (z) {
@@ -142,7 +142,7 @@ public class StartupCompleteComponent {
     }
 
     public static void m32772f(long j, Handler handler) {
-        synchronized (f24301j) {
+        synchronized (mLock) {
             if (!f24298b) {
                 if (j > 0) {
                     handler.sendEmptyMessageDelayed(2, j);
@@ -155,7 +155,7 @@ public class StartupCompleteComponent {
 
     @Deprecated
     public static void m32773g(AbstractC5368a aVar) {
-        synchronized (f24301j) {
+        synchronized (mLock) {
             if (f24298b) {
                 StartupLogger.i("StartupComponent.Complete", "注册启动完成HomeReady监听[%s], 启动已经完成，直接回调", aVar.getClass().getName());
                 aVar.mo28070a(false);

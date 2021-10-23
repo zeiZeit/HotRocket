@@ -8,6 +8,7 @@ import com.zeit.hotrocket.rocket.barrier.BarrierTask;
 import com.zeit.hotrocket.rocket.barrier.Barriers;
 import com.zeit.hotrocket.rocket.init.ContextHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HotRocket {
@@ -151,6 +152,7 @@ public class HotRocket {
             return false;
         }
     }
+
 
     /**
      * 运行同步任务

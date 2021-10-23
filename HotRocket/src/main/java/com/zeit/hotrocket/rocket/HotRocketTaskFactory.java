@@ -13,7 +13,7 @@ import java.util.List;
 public class HotRocketTaskFactory {
     static List<HotRocketTask> createHotRocketTasks(PROCESS process, HotRocketConfig hotRocketConfig) {
         ArrayList<HotRocketTask> taskArrayList = new ArrayList();
-//        m52508b(taskArrayList, process);
+        createTasks(taskArrayList, process);
         HotRocketTaskFactoryInterceptor factoryInterceptor = hotRocketConfig.factoryInterceptor;
         if (factoryInterceptor == null) {
             return taskArrayList;
@@ -27,26 +27,30 @@ public class HotRocketTaskFactory {
         return arrayList2;
     }
 
-    private static void m52508b(List<HotRocketTask> list, PROCESS process) {
-        HotRocketStaticTask hotRocketStaticTask = null;
-        if (process == PROCESS.MAIN) {
-//            list.add(new HotRocketStaticTask("app_home_pre_init", SetUtil.toHashSet(new String[0]), PRIORITY.MAX, ListUtil.toArrayList(PROCESS.MAIN), STAGE.AppInit, THREAD.MAIN, new HomeUIPreInit()));
-//            hotRocketStaticTask = new HotRocketStaticTask("UserIdleCommonInitTask", SetUtil.toHashSet(new String[0]), PRIORITY.MIN, ListUtil.toArrayList(PROCESS.MAIN, PROCESS.TITAN, PROCESS.LIFECYCLE, PROCESS.PATCH, PROCESS.SUPPORT, PROCESS.MEEPO, PROCESS.ASSISTS, PROCESS.XG_SERVICE_V4), STAGE.UserIdleInit, THREAD.BACKGROUND, "com.xunmeng.pinduoduo.appstartup.appinit.UserIdleCommonInitTask");
-        } else if (process == PROCESS.TITAN) {
-
-        } else if (process == PROCESS.LIFECYCLE) {
-
-        } else if (process == PROCESS.PATCH) {
-
-        } else if (process == PROCESS.SUPPORT) {
-
-        } else if (process == PROCESS.ASSISTS) {
-
-        } else if (process == PROCESS.XG_SERVICE_V4) {
-
-        } else {
-            return;
-        }
-        list.add(hotRocketStaticTask);
+    protected static void createTasks(ArrayList<HotRocketTask> taskArrayList, PROCESS process) {
     }
+
+
+//    protected static void createTasks(List<HotRocketTask> list, PROCESS process) {
+//        HotRocketStaticTask hotRocketStaticTask = null;
+//        if (process == PROCESS.MAIN) {
+//            list.add(new HotRocketStaticTask("app_home_pre_init", SetUtil.toHashSet(new String[0]), PRIORITY.MAX, ListUtil.toArrayList(PROCESS.MAIN), STAGE.AppInit, THREAD.MAIN, new HomeUIPreInit()));
+////            hotRocketStaticTask = new HotRocketStaticTask("UserIdleCommonInitTask", SetUtil.toHashSet(new String[0]), PRIORITY.MIN, ListUtil.toArrayList(PROCESS.MAIN, PROCESS.TITAN, PROCESS.LIFECYCLE, PROCESS.PATCH, PROCESS.SUPPORT, PROCESS.MEEPO, PROCESS.ASSISTS, PROCESS.XG_SERVICE_V4), STAGE.UserIdleInit, THREAD.BACKGROUND, "com.xunmeng.pinduoduo.appstartup.appinit.UserIdleCommonInitTask");
+//        } else if (process == PROCESS.TITAN) {
+//
+//        } else if (process == PROCESS.LIFECYCLE) {
+//
+//        } else if (process == PROCESS.PATCH) {
+//
+//        } else if (process == PROCESS.SUPPORT) {
+//
+//        } else if (process == PROCESS.ASSISTS) {
+//
+//        } else if (process == PROCESS.XG_SERVICE_V4) {
+//
+//        } else {
+//            return;
+//        }
+////        list.add(hotRocketStaticTask);
+//    }
 }

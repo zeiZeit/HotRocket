@@ -2,6 +2,8 @@ package com.zeit.hotrocket.rocket;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+
 public class HotRocketConfig {
 
     public String processFullName;
@@ -13,6 +15,8 @@ public class HotRocketConfig {
     public int thread_pool_size;
 
     public String packageName;
+
+    public ArrayList<HotRocketTask> mTask ;
 
     public HotRocketTaskFactoryInterceptor factoryInterceptor;
 
@@ -30,6 +34,16 @@ public class HotRocketConfig {
 
         private HotRocketTaskFactoryInterceptor taskFactoryInterceptor;
 
+        public ArrayList<HotRocketTask> getTask() {
+            return task;
+        }
+
+        public void setTask(ArrayList<HotRocketTask> task) {
+            this.task = task;
+        }
+
+        public ArrayList<HotRocketTask> task;
+
         public static Config getConfig() {
             return new Config();
         }
@@ -43,6 +57,7 @@ public class HotRocketConfig {
                 config.rocket_busy_threshold = this.rocket_busy_threshold;
                 config.factoryInterceptor = this.taskFactoryInterceptor;
                 config.packageName = this.packageName;
+                config.mTask = this.task;
                 return config;
             }
             throw new IllegalStateException("HotRocketConfig TextUtils.isEmpty(this.mProcessName)");

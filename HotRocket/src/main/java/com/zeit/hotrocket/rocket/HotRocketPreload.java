@@ -241,7 +241,7 @@ class HotRocketPreload {
         }
         PROCESS process = HotRocketProcessInstance.getPROCESS(ContextHolder.application, hotRocketConfig.processFullName);
         if (process != null) {
-            List<HotRocketTask> hotRocketTaskList = createHotRocketTasks(process, hotRocketConfig);
+            List<HotRocketTask> hotRocketTaskList = hotRocketConfig.mTask;
             this.mSyncTaskList = getAppInitAndMainThreadTask(hotRocketTaskList);
             String str = HotRocket.TAG;
             Logger.i(str, "进程[" + process + "]的[" + STAGE.AppInit + "/" + THREAD.MAIN + "]任务列表(" + this.mSyncTaskList.size() + "): " + getHotRocketTaskName2String(this.mSyncTaskList));
