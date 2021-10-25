@@ -5,12 +5,9 @@ import android.app.Application;
 import com.zeit.hotrocket.appstartup.components.startupcomplete.StartupCompleteComponent;
 import com.zeit.hotrocket.logger.Logger;
 import com.zeit.hotrocket.rocket.HotRocketTask;
-import com.zeit.hotrocket.rocket.core.utils.ThreadPoolUtils;
 import com.zeit.hotrocket.rocket.init.HotRocketInit;
 import com.zeit.hotrocketdemo.tasks.HotRocketTaskFactory;
-
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ApplicationPreload {

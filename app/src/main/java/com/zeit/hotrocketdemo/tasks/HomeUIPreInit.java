@@ -1,60 +1,69 @@
 package com.zeit.hotrocketdemo.tasks;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.zeit.hotrocket.appinit.annotations.InitTask;
+import com.zeit.hotrocket.logger.Logger;
 import com.zeit.hotrocket.rocket.core.utils.ThreadPoolUtils;
+import com.zeit.hotrocketdemo.R;
+import com.zeit.hotrocketdemo.home.HomeViewCache;
+
+import java.util.zip.Inflater;
 
 
 public class HomeUIPreInit implements InitTask {
 
     public static class RunnableC7578a implements Runnable {
 
-        private Context f33670a;
+        private Context mContext;
 
         public void run() {
-            HomeUIPreInit.m44424a(this.f33670a);
+            HomeUIPreInit.preInitHomeUI(this.mContext);
         }
 
         public RunnableC7578a(Context context) {
-            this.f33670a = context;
+            this.mContext = context;
         }
     }
 
-    public static void m44424a(Context context) {
-//        if (HomeViewCache.f33681a) {
-//            PLog.m14194i("HomeUIPreInit", "home page already created, will not run HomeUIPreInit task");
-//            return;
-//        }
+    public static void preInitHomeUI(Context context) {
+        if (HomeViewCache.hasInit) {
+            Logger.d("HomeUIPreInit", "home page already created, will not run HomeUIPreInit task");
+            return;
+        }
 //        HomePagerAdapter.m44577x(HomePagerAdapter.m44578y(context));
-        m44425b(context, "home_layout_key");
-        m44425b(context, "default_home_layout_key");
+        createHomeUI(context, "home_layout_key");
+//        createHomeUI(context, "default_home_layout_key");
     }
 
-    /* renamed from: b */
-    private static void m44425b(Context context, String str) {
-//        if (HomeViewCache.f33681a) {
-//            PLog.m14194i("HomeUIPreInit", "home page already created, will not inflate " + str);
-//            return;
-//        }
-//        try {
-//            PLog.m14194i("HomeUIPreInit", "preload layout start for layout:" + str);
-//            View c = m44426c(context, str);
-//            if (c != null) {
-//                HomeViewCache.m44455e(str, c);
-//            }
-//            PLog.m14194i("HomeUIPreInit", "preload layout end for layout:" + str);
-//        } catch (Exception e) {
-//            PLog.m14191e("HomeUIPreInit", e);
-//        }
+
+    private static void createHomeUI(Context context, String str) {
+        if (HomeViewCache.hasInit) {
+            Logger.d("HomeUIPreInit", "home page already created, will not inflate " + str);
+            return;
+        }
+        try {
+            Logger.d("HomeUIPreInit", "preload layout start for layout:" + str);
+            View view = createView(context, str);
+            if (view != null) {
+                HomeViewCache.saveUI(str, view);
+            }
+            Logger.d("HomeUIPreInit", "preload layout end for layout:" + str);
+        } catch (Exception e) {
+            Logger.d("HomeUIPreInit", e);
+        }
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:12:0x0027  */
-    /* JADX WARNING: Removed duplicated region for block: B:15:0x0030  */
-    /* renamed from: c */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static View m44426c(Context r3, String r4) {
+    private static View createView(Context context, String key) {
+        View view = null;
+
+        if (key!=null&&key.equals("home_layout_key")){
+            view = LayoutInflater.from(context)
+                    .inflate(R.layout.activity_main, null, false);
+            return view;
+        }
         /*
             int r0 = com.xunmeng.pinduoduo.p614b.NullPointerCrashHandler.m34835i(r4)
             r1 = 1550717738(0x5c6e132a, float:2.68048462E17)
@@ -93,7 +102,7 @@ public class HomeUIPreInit implements InitTask {
         throw new UnsupportedOperationException("Method not decompiled: com.xunmeng.pinduoduo.home.HomeUIPreInit.m44426c(android.content.Context, java.lang.String):android.view.View");
     }
 
-    @Override // com.xunmeng.pinduoduo.appinit.annotations.InitTask
+    @Override
     public void run(Context context) {
 //        if (DefaultHomeAbTestUtil.m30294y()) {
 //            C10617ai.m60220m().mo49880x(ThreadBiz.Home, "XmlLayoutPreloadRunnable", new RunnableC7578a(context));

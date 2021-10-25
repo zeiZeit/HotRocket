@@ -61,7 +61,6 @@ public class StartupStageComponentConfigUpdater {
     }
 
     public static boolean isObserveHomeRender() {
-//        return StartupAbHelper.m38617c("ab_app_startup_component_observe_home_render_5650", false, true);
         return true;
     }
 
