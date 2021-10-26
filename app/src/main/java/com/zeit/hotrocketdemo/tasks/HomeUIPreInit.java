@@ -13,7 +13,7 @@ import com.zeit.hotrocketdemo.home.HomeViewCache;
 
 public class HomeUIPreInit implements InitTask {
 
-    public static class RunnableC7578a implements Runnable {
+    public static class RunnableCreateHomeUI implements Runnable {
 
         private Context mContext;
 
@@ -21,7 +21,7 @@ public class HomeUIPreInit implements InitTask {
             HomeUIPreInit.preInitHomeUI(this.mContext);
         }
 
-        public RunnableC7578a(Context context) {
+        public RunnableCreateHomeUI(Context context) {
             this.mContext = context;
         }
     }
@@ -31,9 +31,7 @@ public class HomeUIPreInit implements InitTask {
             Logger.d("HomeUIPreInit", "home page already created, will not run HomeUIPreInit task");
             return;
         }
-//        HomePagerAdapter.m44577x(HomePagerAdapter.m44578y(context));
         createHomeUI(context, "home_layout_key");
-//        createHomeUI(context, "default_home_layout_key");
     }
 
 
@@ -67,11 +65,6 @@ public class HomeUIPreInit implements InitTask {
 
     @Override
     public void run(Context context) {
-//        if (DefaultHomeAbTestUtil.m30294y()) {
-//            C10617ai.m60220m().mo49880x(ThreadBiz.Home, "XmlLayoutPreloadRunnable", new RunnableC7578a(context));
-//        } else {
-//            C6055f.m35977e().mo30359h(new RunnableC7578a(context));
-//        }
-        ThreadPoolUtils.getInstance().submit(new RunnableC7578a(context));
+        ThreadPoolUtils.getInstance().submit(new RunnableCreateHomeUI(context));
     }
 }
