@@ -35,7 +35,9 @@ public class HotRocketTaskFactory {
         HotRocketStaticTask hotRocketStaticTask = null;
         if (process == PROCESS.MAIN) {
             list.add(new HotRocketStaticTask("app_home_pre_init", SetUtil.toHashSet(new String[0]), PRIORITY.MAX, ListUtil.toArrayList(PROCESS.MAIN), STAGE.AppInit, THREAD.MAIN, new HomeUIPreInit()));
-//            hotRocketStaticTask = new HotRocketStaticTask("UserIdleCommonInitTask", SetUtil.toHashSet(new String[0]), PRIORITY.MIN, ListUtil.toArrayList(PROCESS.MAIN, PROCESS.TITAN, PROCESS.LIFECYCLE, PROCESS.PATCH, PROCESS.SUPPORT, PROCESS.MEEPO, PROCESS.ASSISTS, PROCESS.XG_SERVICE_V4), STAGE.UserIdleInit, THREAD.BACKGROUND, "com.xunmeng.pinduoduo.appstartup.appinit.UserIdleCommonInitTask");
+            list.add(new HotRocketStaticTask("home_page", SetUtil.toHashSet(new String[0]), PRIORITY.MAX, ListUtil.toArrayList(PROCESS.MAIN), STAGE.AppInit, THREAD.MAIN, new HomeInit()));
+
+            //            hotRocketStaticTask = new HotRocketStaticTask("UserIdleCommonInitTask", SetUtil.toHashSet(new String[0]), PRIORITY.MIN, ListUtil.toArrayList(PROCESS.MAIN, PROCESS.TITAN, PROCESS.LIFECYCLE, PROCESS.PATCH, PROCESS.SUPPORT, PROCESS.MEEPO, PROCESS.ASSISTS, PROCESS.XG_SERVICE_V4), STAGE.UserIdleInit, THREAD.BACKGROUND, "com.xunmeng.pinduoduo.appstartup.appinit.UserIdleCommonInitTask");
         } else if (process == PROCESS.LIFECYCLE) {
 
         } else if (process == PROCESS.PATCH) {

@@ -20,6 +20,6 @@ public class MainActivity extends AppCompatActivity {
         }else{
             setContentView(R.layout.activity_main);
         }
-
+        HomeViewCache.onCreate();
     }
 }

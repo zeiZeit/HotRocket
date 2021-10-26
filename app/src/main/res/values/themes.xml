@@ -13,4 +13,24 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="AppThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/bg_primary</item>
+        <item name="colorPrimaryDark">@color/bg_primary_deep</item>
+        <item name="colorAccent">@color/accent_blue</item>
+        <item name="android:colorBackground">@color/bg_window</item>
+<!--        <item name="android:windowBackground">@drawable/main_bitmap_splash_bg</item>-->
+        <!-- <item name="android:windowBackground">@color/bg_window</item>-->
+    </style>
+
+    <style name="AppWelcomeThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowDisablePreview">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:clipToPadding">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
 </resources>

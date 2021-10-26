@@ -12,14 +12,13 @@ import java.util.ArrayList;
 
 public class ApplicationPreload {
 
+
+
     public static void preloadRocket(final Application application) {
         ArrayList<HotRocketTask> taskArrayList = HotRocketTaskFactory.createHotRocketTasks(application);
         HotRocketInit.preLoadHotRocket(application,taskArrayList);
         StartupCompleteComponent.preload();
         Logger.i("ApplicationPreload", "preloadStartup");
     }
-
-
-
 
 }

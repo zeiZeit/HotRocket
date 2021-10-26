@@ -48,12 +48,12 @@ public class HomeViewCache {
         return view;
     }
 
-    public static void m44458h() {
+    public static void onCreate() {
         Logger.d("HomeViewCache", "onCreate");
         hasInit = true;
     }
 
-    public static void m44459i() {
+    public static void onDestroy() {
         Logger.d("HomeViewCache", "onDestroy");
         hasInit = false;
         clearMap();
