@@ -2,7 +2,7 @@ package com.zeit.hotrocket.appstartup.components.startupcomplete;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.os.MessageQueue;
+
 import com.zeit.hotrocket.appstartup.components.StartupLogger;
 import com.zeit.hotrocket.logger.CrashHandlerLogger;
 import java.util.Iterator;
@@ -14,55 +14,39 @@ public class StartupIdleComponent {
     private static List<Observer> observerList;
 
 
-    static void init(final long j, final long j2, boolean observeHomeRender,String mainActivityName) {
+    static void init(final long idleTimeOuts, final long userIdleOutTime, boolean observeHomeRender,String mainActivityName) {
         StartupLogger.i("StartupComponent.Idle", "进程启动，初始化StartupIdleComponent", new Object[0]);
         HomeRenderInternal.init(observeHomeRender,mainActivityName);
-        StartupCompleteComponent.m32773g(new StartupCompleteComponent.AbstractC5368a() {
-
-            @Override
-            public void mo28070a(boolean z) {
-                StartupIdleComponent.m32783d(z);
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    public void run() {
-                        StartupLogger.i("StartupComponent.Idle", "开始监听IDLE，超时时间：%s ...", Long.valueOf(j));
-                        final UserIdleInternal iVar = new UserIdleInternal(handler);
-                        handler.postDelayed(new Runnable() {
-
-                            public void run() {
-                                HomeRenderInternal.m32764c();
-                                StartupIdleComponent.m32784e(true);
-                                StartupIdleComponent.m32781b(j2, iVar);
-                            }
-                        }, j);
-                        HomeRenderInternal.m32765d(new HomeRenderInternal.AbstractC5363a() {
-                            @Override
-                            public void mo28060a() {
-                                Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
-                                    public boolean queueIdle() {
-                                        HomeRenderInternal.m32764c();
-                                        StartupIdleComponent.m32784e(false);
-                                        StartupIdleComponent.m32781b(j2, iVar);
-                                        return false;
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
+        StartupCompleteComponent.addCallback(hasDelay -> {
+            StartupIdleComponent.complete(hasDelay);
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
+                StartupLogger.i("StartupComponent.Idle", "开始监听IDLE，超时时间：%s ...", Long.valueOf(idleTimeOuts));
+                final UserIdleInternal iVar = new UserIdleInternal(handler);
+                handler.postDelayed(() -> {
+                    HomeRenderInternal.clean();
+                    StartupIdleComponent.noticeIdleFinish(true);
+                    StartupIdleComponent.addUserIdleListener(userIdleOutTime, iVar);
+                }, idleTimeOuts);
+                HomeRenderInternal.m32765d(() -> Looper.myQueue().addIdleHandler(() -> {
+                    HomeRenderInternal.clean();
+                    StartupIdleComponent.noticeIdleFinish(false);
+                    StartupIdleComponent.addUserIdleListener(userIdleOutTime, iVar);
+                    return false;
+                }));
+            });
         });
     }
 
-    public static void m32781b(long j, UserIdleInternal iVar) {
-        if (iVar.mo28086d(j, new UserIdleInternal.AbstractC5381a() {
+    public static void addUserIdleListener(long delayTime, UserIdleInternal userIdleInternal) {
+        if (userIdleInternal.addListener(delayTime, new UserIdleInternal.Listener() {
 
             @Override
-            public void mo28074a(boolean z) {
-                StartupIdleComponent.m32785f(z);
+            public void complete(boolean z) {
+                StartupIdleComponent.userIdleFinish(z);
             }
         })) {
-            StartupLogger.i("StartupComponent.Idle", "开始监听USER_IDLE，超时时间：%s ...", Long.valueOf(j));
+            StartupLogger.i("StartupComponent.Idle", "开始监听USER_IDLE，超时时间：%s ...", Long.valueOf(delayTime));
         }
     }
 
@@ -90,7 +74,7 @@ public class StartupIdleComponent {
         }
     }
 
-    public static synchronized void m32783d(boolean z) {
+    public static synchronized void complete(boolean z) {
         String str;
         synchronized (StartupIdleComponent.class) {
             if (StartupStageComponent.stage == StartupStage.DEFAULT) {
@@ -116,7 +100,7 @@ public class StartupIdleComponent {
         }
     }
 
-    public static synchronized void m32784e(boolean z) {
+    public static synchronized void noticeIdleFinish(boolean z) {
         String str;
         synchronized (StartupIdleComponent.class) {
             if (StartupStageComponent.stage == StartupStage.COMPLETE) {
@@ -142,7 +126,7 @@ public class StartupIdleComponent {
         }
     }
 
-    public static synchronized void m32785f(boolean z) {
+    public static synchronized void userIdleFinish(boolean z) {
         String str;
         synchronized (StartupIdleComponent.class) {
             if (StartupStageComponent.stage == StartupStage.IDLE) {

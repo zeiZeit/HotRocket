@@ -75,6 +75,7 @@ public class MyApp extends Application {
                 .setStartupUserIdleTimeoutMillis(StartupStageComponentConfigUpdater.getStartupUserIdleTimeoutMillis())
                 .setObserveHomeRender(StartupStageComponentConfigUpdater.isObserveHomeRender())
                 .setHomeActivityName("com.zeit.hotrocketdemo.MainActivity")
+                .setSplashActivityName("com.zeit.hotrocketdemo.SplashActivity")
                 .build());
     }
 

@@ -13,6 +13,7 @@ public class StartupStageComponentConfig {
     public long startupIdleTimeoutMillis;
 
     public String HomeActivityName;
+    public String SplashActivityName;
 
     public long startupUserIdleTimeoutMillis;
 
@@ -35,6 +36,8 @@ public class StartupStageComponentConfig {
 
         private String HomeActivityName;
 
+        private String SplashActivityName;
+
         public static config get() {
             return new config();
         }
@@ -48,6 +51,7 @@ public class StartupStageComponentConfig {
             config.observeHomeRender = this.observeHomeRender;
             config.isMainProcess = this.isMainProcess;
             config.HomeActivityName = this.HomeActivityName;
+            config.SplashActivityName = this.SplashActivityName;
             return config;
         }
 
@@ -93,6 +97,14 @@ public class StartupStageComponentConfig {
             return this;
         }
 
+        public String getSplashActivityName() {
+            return SplashActivityName;
+        }
+
+        public config setSplashActivityName(String splashActivityName) {
+            SplashActivityName = splashActivityName;
+            return this;
+        }
     }
 
     public String toString() {

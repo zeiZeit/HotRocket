@@ -33,6 +33,6 @@ public class StartupStageComponent {
         StartupComponentBase.setApplication(config.application);
         StartupComponentBase.setIsMainProcess(config.isMainProcess);
         StartupIdleComponent.init(config.startupIdleTimeoutMillis, config.startupUserIdleTimeoutMillis, config.observeHomeRender,config.HomeActivityName);
-        StartupCompleteComponent.m32770d(config.startupCompleteTimeoutMillis);
+        StartupCompleteComponent.init(config.startupCompleteTimeoutMillis,config.SplashActivityName);
     }
 }

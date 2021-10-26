@@ -15,11 +15,11 @@ import java.util.List;
 
 public class StartupCompleteComponent {
 
-    public static boolean f24297a;
+    public static boolean hasDoFrame;
 
-    public static boolean f24298b;
+    public static boolean complete;
 
-    private static List<AbstractC5368a> f24299h;
+    private static List<Callback> callbackList;
 
     private static Handler mHandler;
 
@@ -28,57 +28,57 @@ public class StartupCompleteComponent {
     static SimpleActivityLifecycleCallback simpleActivityLifecycleCallback;
 
 
-    public interface AbstractC5368a {
-        void mo28070a(boolean z);
+    public interface Callback {
+        void onComplete(boolean z);
     }
 
     public static void preload() {
         synchronized (mLock) {
             if (mHandler == null) {
                 StartupLogger.i("StartupComponent.Complete", "StartupCompleteComponent预加载线程", new Object[0]);
-                mHandler = m32774k();
+                mHandler = getHandler();
             }
         }
     }
 
-    static void m32770d(long j) {
+    static void init(long startupCompleteTimeoutMillis,String splashActivity) {
         final Handler handler;
         StartupLogger.i("StartupComponent.Complete", "进程启动，初始化StartupCompleteComponent", new Object[0]);
         synchronized (mLock) {
             if (mHandler == null) {
                 StartupLogger.i("StartupComponent.Complete", "StartupCompleteComponent初始化线程", new Object[0]);
-                mHandler = m32774k();
+                mHandler = getHandler();
             }
             handler = mHandler;
         }
         if (!StartupComponentBase.isMainProcess()) {
             StartupLogger.i("StartupComponent.Complete", "非主进程启动，直接发送启动完成HomeReady通知...", new Object[0]);
-            m32772f(0, handler);
+            sendEmptyMessage(0, handler);
             return;
         }
-        StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("主进程启动，开始监听第一个页面创建，超时时间%sms...", Long.valueOf(j)), new Object[0]);
-        m32772f(j, handler);
+        StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("主进程启动，开始监听第一个页面创建，超时时间%sms...", Long.valueOf(startupCompleteTimeoutMillis)), new Object[0]);
+        sendEmptyMessage(startupCompleteTimeoutMillis, handler);
 
         simpleActivityLifecycleCallback = new SimpleActivityLifecycleCallback() {
             @Override
             public void onActivityResumed(Activity activity) {
                 super.onActivityResumed(activity);
                 final String simpleName = activity.getClass().getSimpleName();
-                if (StartupCompleteComponent.f24298b || StartupCompleteComponent.f24297a) {
+                if (StartupCompleteComponent.complete || StartupCompleteComponent.hasDoFrame) {
                     StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("创建页面[%s]，启动完成HomeReady通知已经完成或正在排队中，忽略.", simpleName), new Object[0]);
-                    if (!StartupCompleteComponent.f24297a) {
+                    if (!StartupCompleteComponent.hasDoFrame) {
                         StartupComponentBase.getApplication().unregisterActivityLifecycleCallbacks(this);
                     }
-                } else if (CrashHandlerLogger.m34820R("com.xunmeng.pinduoduo.ui.activity.MainFrameActivity", activity.getClass().getName())) {
-                    StartupLogger.i("StartupComponent.Complete", "创建闪屏页面[MainFrameActivity]，忽略.", new Object[0]);
+                } else if (CrashHandlerLogger.m34820R(splashActivity, activity.getClass().getName())) {
+                    StartupLogger.i("StartupComponent.Complete", "创建闪屏页面[splash]，忽略.", new Object[0]);
                 } else {
                     StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("创建第一个非闪屏页面[%s]，等待页面绘制...", simpleName), new Object[0]);
                     activity.getWindow().getDecorView().post(new Runnable() {
 
                         public void run() {
-                            if (StartupCompleteComponent.f24298b || StartupCompleteComponent.f24297a) {
+                            if (StartupCompleteComponent.complete || StartupCompleteComponent.hasDoFrame) {
                                 StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]第一次DoFrame完成，启动完成HomeReady通知已经完成或正在排队中，忽略.", simpleName), new Object[0]);
-                                if (!StartupCompleteComponent.f24297a) {
+                                if (!StartupCompleteComponent.hasDoFrame) {
                                     unregisterActivityLifecycleCallbacks();
                                     return;
                                 }
@@ -86,16 +86,16 @@ public class StartupCompleteComponent {
                             }
                             StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]第一次DoFrame完成，解除监听后续页面，启动完成HomeReady通知排队中...", simpleName), new Object[0]);
                             unregisterActivityLifecycleCallbacks();
-                            StartupCompleteComponent.f24297a = true;
+                            StartupCompleteComponent.hasDoFrame = true;
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
 
                                 public void run() {
-                                    if (StartupCompleteComponent.f24298b) {
+                                    if (StartupCompleteComponent.complete) {
                                         StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]绘制完成，启动完成HomeReady通知已经完成，忽略.", simpleName), new Object[0]);
                                         return;
                                     }
                                     StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("页面[%s]绘制完成，开始发送启动完成HomeReady通知...", simpleName), new Object[0]);
-                                    StartupCompleteComponent.m32772f(0, handler);
+                                    StartupCompleteComponent.sendEmptyMessage(0, handler);
                                 }
                             });
                         }
@@ -113,39 +113,39 @@ public class StartupCompleteComponent {
         }
     }
 
-    public static void m32771e(boolean z, Handler handler) {
+    public static void complete(boolean hasDelay, Handler handler) {
         String str;
         synchronized (mLock) {
-            if (!f24298b) {
-                f24298b = true;
+            if (!complete) {
+                complete = true;
                 mHandler = null;
                 handler.getLooper().quit();
                 Object[] objArr = new Object[1];
-                if (z) {
+                if (hasDelay) {
                     str = "(启动超时)";
                 } else {
                     str = "";
                 }
                 objArr[0] = str;
                 StartupLogger.i("StartupComponent.Complete", CrashHandlerLogger.m34780h("启动完成HomeReady通知完毕%s.", objArr), new Object[0]);
-                List<AbstractC5368a> list = f24299h;
+                List<Callback> list = callbackList;
                 if (list != null && !list.isEmpty()) {
-                    Iterator V = CrashHandlerLogger.m34824V(f24299h);
+                    Iterator V = CrashHandlerLogger.m34824V(callbackList);
                     while (V.hasNext()) {
-                        ((AbstractC5368a) V.next()).mo28070a(z);
+                        ((Callback) V.next()).onComplete(hasDelay);
                     }
-                    f24299h.clear();
+                    callbackList.clear();
                 }
-                f24299h = null;
+                callbackList = null;
             }
         }
     }
 
-    public static void m32772f(long j, Handler handler) {
+    public static void sendEmptyMessage(long startupCompleteTimeoutMillis, Handler handler) {
         synchronized (mLock) {
-            if (!f24298b) {
-                if (j > 0) {
-                    handler.sendEmptyMessageDelayed(2, j);
+            if (!complete) {
+                if (startupCompleteTimeoutMillis > 0) {
+                    handler.sendEmptyMessageDelayed(2, startupCompleteTimeoutMillis);
                 } else {
                     handler.sendEmptyMessage(1);
                 }
@@ -154,33 +154,33 @@ public class StartupCompleteComponent {
     }
 
     @Deprecated
-    public static void m32773g(AbstractC5368a aVar) {
+    public static void addCallback(Callback callback) {
         synchronized (mLock) {
-            if (f24298b) {
-                StartupLogger.i("StartupComponent.Complete", "注册启动完成HomeReady监听[%s], 启动已经完成，直接回调", aVar.getClass().getName());
-                aVar.mo28070a(false);
+            if (complete) {
+                StartupLogger.i("StartupComponent.Complete", "注册启动完成HomeReady监听[%s], 启动已经完成，直接回调", callback.getClass().getName());
+                callback.onComplete(false);
             } else {
-                StartupLogger.i("StartupComponent.Complete", "注册启动完成HomeReady监听[%s], 开始监听...", aVar.getClass().getName());
-                if (f24299h == null) {
-                    f24299h = new LinkedList();
+                StartupLogger.i("StartupComponent.Complete", "注册启动完成HomeReady监听[%s], 开始监听...", callback.getClass().getName());
+                if (callbackList == null) {
+                    callbackList = new LinkedList();
                 }
-                f24299h.add(aVar);
+                callbackList.add(callback);
             }
         }
     }
 
-    private static Handler m32774k() {
+    private static Handler getHandler() {
         HandlerThread handlerThread = new HandlerThread("Startup#StartupComponent.Complete");
         handlerThread.start();
         return new Handler(handlerThread.getLooper()) {
             public void handleMessage(Message message) {
-                boolean z;
+                boolean hasDelay                                                                           ;
                 if (message.what == 2) {
-                    z = true;
+                    hasDelay = true;
                 } else {
-                    z = false;
+                    hasDelay = false;
                 }
-                StartupCompleteComponent.m32771e(z, this);
+                StartupCompleteComponent.complete(hasDelay, this);
             }
         };
     }

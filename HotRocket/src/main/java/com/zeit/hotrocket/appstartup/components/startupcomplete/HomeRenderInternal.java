@@ -48,7 +48,7 @@ public class HomeRenderInternal {
         }
     }
 
-    static void m32764c() {
+    static void clean() {
         if (isObserveHomeRender) {
             if (Looper.myLooper() != Looper.getMainLooper()) {
                 throw new IllegalStateException("HomeRenderInternal clean must run in main thread.");

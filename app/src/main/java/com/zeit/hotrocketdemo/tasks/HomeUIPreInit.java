@@ -57,10 +57,8 @@ public class HomeUIPreInit implements InitTask {
         if (key!=null&&key.equals("home_layout_key")){
             view = LayoutInflater.from(context)
                     .inflate(R.layout.activity_main, null, false);
-            return view;
         }
-
-        throw new UnsupportedOperationException("Method not decompiled: com.xunmeng.pinduoduo.home.HomeUIPreInit.m44426c(android.content.Context, java.lang.String):android.view.View");
+        return view;
     }
 
     @Override
