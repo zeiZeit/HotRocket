@@ -25,8 +25,6 @@ public class MyApp extends Application {
         super.attachBaseContext(base);
         Logger.d(HotRocket.TAG,"MyApp attachBaseContext");
         this.processName = ProcessNameUtil.getCurrentProcessName();
-
-
     }
 
     @Override
@@ -35,7 +33,7 @@ public class MyApp extends Application {
         Logger.d(HotRocket.TAG,"MyApp onCreate");
         initProcessStartTime();
         if (isMainProcess){
-            ApplicationPreload.preloadRocket(this.application);
+            ApplicationPreload.preloadApp(this.application);
             HotRocketInit.launch(this);
             initStartupComponent(this);
         }
