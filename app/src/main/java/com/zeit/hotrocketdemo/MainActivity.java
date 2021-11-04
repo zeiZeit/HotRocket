@@ -3,13 +3,17 @@ package com.zeit.hotrocketdemo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.zeit.hotrocketdemo.home.HomeViewCache;
 
 public class MainActivity extends AppCompatActivity {
+
+    String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,5 +25,25 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
         }
         HomeViewCache.onCreate();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Log.i(TAG, "onWindowFocusChanged: 延时操作放在这才有效");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clickTest(View view) {
+        Toast.makeText(this, "test!", Toast.LENGTH_SHORT).show();
     }
 }
