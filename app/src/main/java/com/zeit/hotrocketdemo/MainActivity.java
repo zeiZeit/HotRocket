@@ -13,7 +13,7 @@ import com.zeit.hotrocketdemo.home.HomeViewCache;
 
 public class MainActivity extends AppCompatActivity {
 
-    String TAG = "MainActivity";
+    String TAG = "zz";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +30,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, "onResume:");
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        Log.i(TAG, "onWindowFocusChanged: 延时操作放在这才有效");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (hasFocus){
+            Log.i(TAG, "onWindowFocusChanged: 延时操作放在这才有效");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

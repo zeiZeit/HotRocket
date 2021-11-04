@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -20,4 +21,15 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("zz", "onDestroy: ");
+    }
 }
