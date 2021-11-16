@@ -15,13 +15,7 @@ public class HomeViewCache {
 
     public static volatile boolean hasInit;
 
-    public static volatile boolean f33682b;
-
     private static Map<String, View> mViewMap = new ConcurrentHashMap(10);
-
-    public static void m44457g() {
-        f33682b = true;
-    }
 
     public static void saveUI(String str, View view) {
         CrashHandlerLogger.mapPut(mViewMap, str, view);

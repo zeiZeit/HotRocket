@@ -9,6 +9,7 @@ public class HomeInit implements InitTask {
 
     @Override
     public void run(Context context) {
+        //fragment ui的预加载
 
     }
 
