@@ -19,15 +19,14 @@ public class Dex2oatInit implements InitTask {
         if (context==null){
             return;
         }
-        int currentCode = getPackageVersionCode(context);
-        int storeCode = getInt(getSp(context),SP_KEY_DEX_UPDATE,0);
-        if (storeCode>=currentCode){
-            return;
-        }
-        putInt(getSp(context),SP_KEY_DEX_UPDATE,currentCode);
         try {
             String appDir = context.getPackageManager().getApplicationInfo(
                     context.getPackageName(), 0).sourceDir;
+            String  storeCode = getString(getSp(context),SP_KEY_DEX_UPDATE,"-");
+            if (storeCode.equals(appDir)){
+                return;
+            }
+
             if (Build.VERSION.SDK_INT >= 29){
                 new Dex2oat().dex2oatByBinder(context);  //binder方式触发全量编译，有效
             }else {
@@ -35,7 +34,7 @@ public class Dex2oatInit implements InitTask {
 //                Dex2oat.makeDex2OatV2(appDir,"data/app/base.odex"); //快速编译 runtime.exec()在api>29报错，没有对/data的操作权限
                 Dex2oat.makeDex2oat1(appDir,"data/app/com.simuwang.ppw/base.odex");  //全量编译 runtime.exec()在api>29报错，没有对/data的操作权限
             }
-
+            putString(getSp(context),SP_KEY_DEX_UPDATE,appDir);
             //new Dex2oat().dexOptSpeed(mContext,mContext.getPackageName()); //反射报错
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -76,15 +75,15 @@ public class Dex2oatInit implements InitTask {
     /**
      * 存int缓存
      */
-    public static void putInt(SharedPreferences sp,String key, int value) {
-        sp.edit().putInt(key, value).apply();
+    public static void putString(SharedPreferences sp,String key, String value) {
+        sp.edit().putString(key, value).apply();
     }
 
     /**
      * 取int缓存
      */
-    public static int getInt(SharedPreferences sp,String key, int defValue) {
-        return sp.getInt(key, defValue);
+    public static String getString(SharedPreferences sp,String key, String  defValue) {
+        return sp.getString(key, defValue);
     }
 
 
